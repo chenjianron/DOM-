@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>JS DOM雪花特效</title>
+
+    <script>
+
+        var timer1,timer2;
+
+        function snow() {
+            var allSnow = document.getElementsByTagName("div");
+            var length = allSnow.length;
+            for (var i = 0; i < length; i++) {
+                if(Number( allSnow[i].style.top.toString().replace("px","")) <= window.screen.height)
+                    allSnow[i].style.top = Number( allSnow[i].style.top.toString().replace("px","")) + 5 + "px";
+            }
+
+        }
+
+        function startSnow() {
+            if(timer1 == null && timer2 == null) {
+                timer2 =setInterval("add()",1500);
+                timer1 = setInterval("snow()", 100);
+            }
+        }
+
+        function stopSnow() {
+            clearInterval(timer1);
+            clearInterval(timer2);
+            timer1 = null;
+            timer2 = null;
+        }
+
+        function add() {
+            for (var i = 1; i <= 30; i++) {
+                var mydiv = document.createElement("div");
+                mydiv.style.width = "20px";
+                mydiv.style.height = "20px";
+                mydiv.style.backgroundImage = "url(images/white-snow.png)";
+                mydiv.style.backgroundSize = "20px 20px"
+                mydiv.style.position = "fixed";
+                mydiv.style.left = Math.random() * window.screen.width + "px";
+                mydiv.style.top = Math.random() * window.screen.height + 40 +"px";
+                document.body.appendChild(mydiv);
+            }
+        }
+
+        function del() {
+            var allSnow = document.getElementsByTagName("div");
+            var length = allSnow.length;
+            for (var i = 0; i < length; i++) {
+                document.body.removeChild(allSnow[i]);  // 删除body的子节点
+                allSnow[0].remove();                // 直接将该元素删除
+                allSnow[i].style.display = "none";  // 通过设置元素为不可见来模拟删除
+            }
+        }
+
+    </script>
+
+<body style="background-image:url(images/snow-night.jpg); background-size: cover; background-repeat: no-repeat">
+    <input type="button" value="增加" onclick="add()"/>
+    <input type="button" value="开始", onclick="startSnow()">
+    <input type="button" value="停止", onclick="stopSnow()">
+    <input type="button" value="删除" onclick="del()"/>
+</body>
+</html>
